@@ -1,5 +1,9 @@
-# MLOps Hiring - Core (Local Development & Training Environment)
+<div align="center">
+  
+# MLOps Hiring - Core
+## (Local Development & Training Environment)
 
+</div> 
 This repository contains the local full-stack development environment for the MLOps Hiring system.
 
 It serves as:
