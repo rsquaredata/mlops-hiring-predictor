@@ -1,146 +1,124 @@
-# MLOps Hiring Predictor
+# MLOps Hiring - Core (Local Development & Training Environment)
 
-A dockerized microservices application for predicting hiring decisions
-using a machine learning model.
+This repository contains the local full-stack development environment for the MLOps Hiring system.
 
-This project implements a complete MLOps pipeline including:
+It serves as:
 
--   Data preprocessing and model training (scikit-learn)
--   Model serialization (joblib)
--   FastAPI REST API for inference
--   Streamlit frontend interface
--   MongoDB for prediction logging
--   Docker & Docker Compose orchestration
+- 🧠 Model training environment
+- 🐳 Docker Compose orchestration layer
+- 🧪 Local API & UI testing
+- 🗄️ Local MongoDB logging
+- 📦 Model artifact generation for production deployment
 
-------------------------------------------------------------------------
+---
 
-## Architecture
+## Role in the Global Architecture
 
-Browser → Streamlit (client)\
-        ↓\
-     FastAPI (server)\
-        ↓\
-     MongoDB (database)
+This repository represents the **development layer** of the system.
 
--   The client sends candidate features to the API.
--   The server loads a trained model and returns a hiring probability.
--   Each prediction is stored in MongoDB.
+Production deployment is handled in separate repositories:
 
-------------------------------------------------------------------------
+- Backend API → HuggingFace Space
+- Frontend UI → HuggingFace Space
+- MongoDB Atlas → Cloud database
 
-## Dataset
+---
 
-The model is trained on the Kaggle dataset:
+## Machine Learning Pipeline
 
-**Predicting Hiring Decisions in Recruitment Data**
+- Dataset: [Kaggle - *Predicting Hiring Decisions in Recruitment Data*](https://www.kaggle.com/datasets/rabieelkharoua/predicting-hiring-decisions-in-recruitment-data)
+- Preprocessing with `StandardScaler`
+- Logistic Regression (class imbalance handled)
+- Train/test split: 80/20
+- Probability-based inference
+- Model serialized via `joblib`
 
-The dataset contains candidate features such as:
+Artifacts generated:
 
--   Age
--   EducationLevel
--   ExperienceYears
--   InterviewScore
--   SkillScore
--   PersonalityScore
--   RecruitmentStrategy
+- `model.pkl`
+- `scaler.pkl`
 
-Target variable:
+These artifacts are used in production backend deployment.
 
--   HiringDecision (0 / 1)
+---
 
-The dataset presents moderate class imbalance (\~69% / 31%).
+## Local Full-Stack Environment
 
-------------------------------------------------------------------------
+Run the entire stack locally:
 
-## Model
-
--   Algorithm: Logistic Regression
--   Features scaled using StandardScaler
--   Trained using an 80/20 split
--   Final accuracy ≈ 0.87 on test set
-
-The model returns a probability of hiring rather than a binary
-classification.
-
-------------------------------------------------------------------------
-
-## Running the Project
-
-From the root directory:
-
-``` bash
+```bash
 docker compose up --build
 ```
 
-Services:
+---
 
--   FastAPI → http://localhost:8000/docs
--   Streamlit → http://localhost:8501
+## Services:
 
-------------------------------------------------------------------------
+FastAPI → http://localhost:8000/docs
 
-## API Endpoints
+Streamlit → http://localhost:8501
 
-### POST /predict
+MongoDB → local container
 
-Returns hiring probability.
+---
 
-Example request:
+## Local Architecture
 
-``` json
-{
-  "Age": 30,
-  "Gender": 1,
-  "EducationLevel": 3,
-  "ExperienceYears": 5,
-  "PreviousCompanies": 2,
-  "DistanceFromCompany": 10,
-  "InterviewScore": 80,
-  "SkillScore": 75,
-  "PersonalityScore": 70,
-  "RecruitmentStrategy": 2
-}
+```
+Browser
+↓
+Streamlit (client container)
+↓
+FastAPI (server container)
+↓
+MongoDB (container)
 ```
 
-Response:
-
-``` json
-{
-  "hiring_probability": 0.6087
-}
-```
-
-------------------------------------------------------------------------
-
-### GET /history
-
-Returns stored predictions from MongoDB.
-
-------------------------------------------------------------------------
+---
 
 ## Project Structure
 
-    mlops-hiring-predictor/
-    │
-    ├── client/
-    │   ├── app.py
-    │   ├── Dockerfile
-    │   └── requirements.txt
-    │
-    ├── server/
-    │   ├── app.py
-    │   ├── train.py
-    │   ├── model.pkl
-    │   ├── scaler.pkl
-    │   ├── Dockerfile
-    │   └── requirements.txt
-    │
-    ├── docker-compose.yml
-    └── README.md
+```
+mlops-hiring-predictor/
+│
+├── client/
+│   ├── app.py
+│   ├── Dockerfile
+│   └── requirements.txt
+│
+├── server/
+│   ├── app.py
+│   ├── train.py
+│   ├── model.pkl
+│   ├── scaler.pkl
+│   ├── Dockerfile
+│   └── requirements.txt
+│
+├── docker-compose.yml
+└── README.md
+```
 
-------------------------------------------------------------------------
+---
+
+## Why This Repository Exists
+
+This repository isolates:
+
+- Local experimentation
+- Model development
+- Containerized service testing
+- Reproducible dev environment
+- Production deployment is handled separately with CI/CD and cloud infrastructure.
+
+---
 
 ## Notes
 
--   The dataset is used for educational and demonstration purposes.
--   This project demonstrates end-to-end containerized ML deployment.
+This project is designed for educational and portfolio demonstration purposes.
+
+It showcases a complete end-to-end MLOps workflow:  
+training → containerization → API → UI → database → cloud deployment.
+
+---
+
+Go back to the [meta repository](https://github.com/rsquaredata/mlops-hiring).
