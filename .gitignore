@@ -1,0 +1,9 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Downloaded training data (see README)
+server/data/*.csv
+!server/data/.gitkeep

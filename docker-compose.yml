@@ -1,0 +1,29 @@
+services:
+  mongo:
+    image: mongo:6
+    container_name: mlops-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  server:
+    build:
+      context: ./server
+    container_name: mlops-server
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo
+
+  client:
+    build:
+      context: ./client
+    container_name: mlops-client
+    ports:
+      - "8501:8501"
+    depends_on:
+      - server
+
+volumes:
+  mongo_data:
